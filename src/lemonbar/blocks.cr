@@ -4,8 +4,8 @@ require "./color"
 module Lemonbar
   module Block
     class TextBlock < Base
-      @bg : String | Color?
-      @fg : String | Color?
+      @bg : Color?
+      @fg : Color?
 
       def initialize(@name : String, @bg = nil, @fg = nil)
       end

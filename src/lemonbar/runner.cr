@@ -17,9 +17,9 @@ module Lemonbar
     property? font : String?
     property? nb_click_areas : Int32?
     property? underline_width : Int32? # should be underline_height ??
-    property? bg_color : Color | String?
-    property? fg_color : Color | String?
-    property? underline_color : Color | String?
+    property? bg_color : Color?
+    property? fg_color : Color?
+    property? underline_color : Color?
     property permanent = false
 
     def run(bar : Bar, interval)

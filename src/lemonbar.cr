@@ -1,5 +1,10 @@
-require "./lemonbar/*"
+require "./lemonbar/**"
+require "./material_color"
 
 module Lemonbar
-  # TODO Put your code here
+  def self.new
+    Runner.new
+  end
 end
+
+

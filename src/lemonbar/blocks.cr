@@ -3,6 +3,22 @@ require "./color"
 
 module Lemonbar
   module Block
+    class Container < Base
+      property blocks = [] of Base
+      property? separator : Base?
+
+      forward_missing_to @blocks
+
+      def render(io)
+        @blocks.each_with_index do |block, i|
+          if i > 0 && (separator = separator?)
+            separator.render io
+          end
+          block.render io
+        end
+      end
+    end
+
     class TextBlock < Base
       @bg : Color?
       @fg : Color?

@@ -17,22 +17,26 @@ module Lemonbar
   end
 
   class Bar
-    @blocks = [] of Block::Base
-
-    setter spacer : Block::Base?
-
-    def <<(block)
-      if !@blocks.empty? && (spacer = @spacer)
-        @blocks << spacer
-      end
-      @blocks << block
-    end
+    getter left = Block::Container.new
+    getter center = Block::Container.new
+    getter right = Block::Container.new
 
     def next_bar
       io = IO::Memory.new
 
-      @blocks.each do |block|
-        block.render io
+      unless left.empty?
+        io << "%{l}"
+        left.render io
+      end
+
+      unless center.empty?
+        io << "%{c}"
+        center.render io
+      end
+
+      unless right.empty?
+        io << "%{r}"
+        right.render io
       end
 
       io.to_s

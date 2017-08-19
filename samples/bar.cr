@@ -9,7 +9,7 @@ lemonbar.bg_color = Material::Teal_500
 lemonbar.fg_color = "#eee"
 
 bar = Bar.new
-bar.left.separator = Block::SpacerBlock.new 1
+bar.left.separator = Block::TextSpacerBlock.new 1
 
 bar.left << Block::TextBlock.new "block1"
 bar.left << Block::TextBlock.new "block2", bg: Material::Red_500

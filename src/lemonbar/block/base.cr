@@ -9,6 +9,10 @@ module Lemonbar
       end
     end
 
+    # Cached version of `BaseBlock`.
+    #
+    # It saves the rendering output, and use it to render the block,
+    # until it is marked dirty.
     abstract class CachedBlock < BaseBlock
       @cache : String? = nil
       @dirty = true

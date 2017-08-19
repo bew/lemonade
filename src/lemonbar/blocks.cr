@@ -10,7 +10,7 @@ module Lemonbar
       forward_missing_to @blocks
 
       def dirty?
-        @blocks.any? &.dirty?
+        @blocks.any? &.dirty? || @separator.dirty? || @dirty
       end
 
       def cached_render(io)

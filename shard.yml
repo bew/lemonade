@@ -1,0 +1,13 @@
+name: lemonbar
+version: 0.1.0
+
+authors:
+  - Benoit de Chezelles <lesell_b@epitech.eu>
+
+targets:
+  lemonbar:
+    main: src/lemonbar.cr
+
+crystal: 0.23.1
+
+license: MIT

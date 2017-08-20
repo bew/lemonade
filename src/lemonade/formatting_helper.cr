@@ -1,26 +1,17 @@
 module Lemonade
   module FormattingHelper
     # Formats *block* with foreground *color*.
-    def fg(block, color)
-      unless color
-        color = ColorReset
-      end
+    def fg(block, color = ColorReset)
       Formatter::FgColor.new block, color
     end
 
     # Formats *block* with background *color*.
-    def bg(block, color)
-      unless color
-        color = ColorReset
-      end
+    def bg(block, color = ColorReset)
       Formatter::BgColor.new block, color
     end
 
     # Underlines *block*, colored using *color*.
-    def ul(block, color)
-      unless color
-        color = ColorReset
-      end
+    def ul(block, color = ColorReset)
       Formatter::Underline.new block, color
     end
 

@@ -15,7 +15,7 @@ module Lemonade
     property? dock_bottom : Bool?
     property? geometry : Geometry?
     property? nb_click_areas : Int32?
-    property? underline_width : Int32? # should be underline_height ??
+    property? underline_height : Int32?
     property? bg_color : Color?
     property? fg_color : Color?
     property? underline_color : Color?
@@ -66,8 +66,8 @@ module Lemonade
         args << "-a" << nb_click_areas.to_s
       end
 
-      if underline_width = underline_width?
-        args << "-u" << underline_width.to_s
+      if underline_height = underline_height?
+        args << "-u" << underline_height.to_s
       end
 
       if bg_color = bg_color?

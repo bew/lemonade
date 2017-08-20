@@ -34,7 +34,7 @@ module Lemonade
       end
 
       def post_render(io)
-        io << "%{F}"
+        io << "%{F-}"
       end
     end
 
@@ -47,20 +47,45 @@ module Lemonade
       end
 
       def post_render(io)
-        io << "%{B}"
+        io << "%{B-}"
       end
     end
 
     class Underline < Base
-      def initialize(@content_block, @color : Color)
+      def initialize(@content_block, @color : Color?)
       end
 
       def pre_render(io)
-        io << "%{U" << @color.to_s << "}"
+        if color = @color
+          io << "%{U" << color.to_s << "}"
+        end
+        io << "%{+u}"
       end
 
       def post_render(io)
-        io << "%{U}"
+        io << "%{-u}"
+        if color = @color
+          io << "%{U-}"
+        end
+      end
+    end
+
+    class Strike < Base
+      def initialize(@content_block, @color : Color?)
+      end
+
+      def pre_render(io)
+        if color = @color
+          io << "%{U" << color.to_s << "}"
+        end
+        io << "%{+o}"
+      end
+
+      def post_render(io)
+        io << "%{-o}"
+        if color = @color
+          io << "%{U-}"
+        end
       end
     end
   end

@@ -23,35 +23,25 @@ module Lemonade
       bg(inner, bg_color)
     end
 
-    # Set foreground *color*.
-    def fg_color(color)
-      Formatter::Raw::StuffColor.new('F', color)
-    end
+    RAW_STUFF = {
+      fg: {"foreground", 'F'},
+      bg: {"background", 'B'},
+      line: {"underline & strike attributes", 'U'},
+    }
 
-    # Reset foreground color.
-    def fg_reset
-      fg_color ColorReset
-    end
+    {% for raw_what, data in RAW_STUFF %}
+      {% raw_doc = data[0]; raw_char = data[1] %}
 
-    # Set background *color*.
-    def bg_color(color)
-      Formatter::Raw::StuffColor.new('B', color)
-    end
+      # Set {{raw_doc}} *color*.
+      def {{raw_what.id}}_color(color)
+        Formatter::Raw::StuffColor.new({{raw_char}}, color)
+      end
 
-    # Reset background color.
-    def bg_reset
-      bg_color ColorReset
-    end
-
-    # Set underline & strike attributes *color*.
-    def line_color(color)
-      Formatter::Raw::StuffColor.new('U', color)
-    end
-
-    # Reset underline & strike attributes color.
-    def line_reset
-      line_color ColorReset
-    end
+      # Reset {{raw_doc}} color.
+      def {{raw_what.id}}_reset
+        {{raw_what.id}}_color ColorReset
+      end
+    {% end %}
 
     {% for attr, attr_char in {underline: 'u', strike: 'o'} %}
       # Enables attribute {{attr.id}}

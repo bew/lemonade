@@ -10,13 +10,14 @@ module Lemonbar
       forward_missing_to @blocks
 
       def dirty?
-        @blocks.any? &.dirty? || @separator.dirty? || @dirty
+        @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || @dirty
       end
 
       def cached_render(io)
-        puts "rendering container"
+        separator = @separator
+
         @blocks.each_with_index do |block, i|
-          if i > 0 && (separator = separator?)
+          if i > 0 && separator
             separator.render io
           end
           block.render io

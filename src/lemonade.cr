@@ -1,7 +1,7 @@
-require "./lemonbar/**"
+require "./lemonade/**"
 require "./material_color"
 
-module Lemonbar
+module Lemonade
   def self.new
     Runner.new
   end

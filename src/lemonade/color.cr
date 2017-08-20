@@ -1,6 +1,6 @@
 require "../material_color"
 
-module Lemonbar
+module Lemonade
   alias Color = ::Material::Color | String
   ColorReset = "-"
 end

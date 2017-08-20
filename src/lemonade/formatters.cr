@@ -1,6 +1,6 @@
 require "./block/base"
 
-module Lemonbar
+module Lemonade
   module Formatter
     abstract class Base < Block::BaseBlock
       def initialize(@content_block : Block::BaseBlock)

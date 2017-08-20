@@ -1,6 +1,6 @@
 require "./blocks"
 
-module Lemonbar
+module Lemonade
   abstract class BarProvider
     abstract def next_bar
   end

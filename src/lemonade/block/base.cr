@@ -1,4 +1,4 @@
-module Lemonbar
+module Lemonade
   module Block
     abstract class BaseBlock
       abstract def render(io)

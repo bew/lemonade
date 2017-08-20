@@ -1,13 +1,13 @@
 require "./color"
 
-module Lemonbar
+module Lemonade
   record Geometry,
     width : Int32,
     height : Int32,
     x : Int32,
     y : Int32
 
-  class Runner
+  class Lemon
     BIN = "lemonbar"
 
     property? win_name : String?
@@ -23,13 +23,13 @@ module Lemonbar
     property fonts = [] of String
 
     def run(bar, interval)
-      lemonbar = Process.new BIN, build_args, input: nil
+      lemon = Process.new BIN, build_args, input: nil
       while bar_str = bar.next_bar
-        lemonbar.input.puts bar_str
+        lemon.input.puts bar_str
         sleep interval
 
-        if lemonbar.terminated?
-          STDERR.puts "Lemonbar process terminated unexpectedly, exiting.."
+        if lemon.terminated?
+          STDERR.puts "Lemonade process terminated unexpectedly, exiting.."
           exit 1
         end
       end

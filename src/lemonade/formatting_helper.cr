@@ -1,4 +1,4 @@
-module Lemonbar
+module Lemonade
   module FormattingHelper
     # Formats *block* with foreground *color*.
     def fg(block, color)

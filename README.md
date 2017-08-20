@@ -1,4 +1,4 @@
-# lemonbar
+# Lemonade
 
 Lemonbar configuration framework
 
@@ -86,7 +86,7 @@ L1-5 are lemons. Each lemon can be given a unique ID (e.g: L5 has ID `bottom`).
 
 ## Contributing
 
-1. Fork it ( https://github.com/bew/lemonbar.cr/fork )
+1. Fork it ( https://github.com/bew/lemonade/fork )
 2. Create your feature branch (git checkout -b my-new-feature)
 3. Commit your changes (git commit -am 'Add some feature')
 4. Push to the branch (git push origin my-new-feature)

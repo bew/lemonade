@@ -1,7 +1,7 @@
 require "./block/base"
 require "./color"
 
-module Lemonbar
+module Lemonade
   module Block
     class Container < CachedBlock
       property blocks = [] of BaseBlock

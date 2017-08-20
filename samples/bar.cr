@@ -1,9 +1,9 @@
 #!/usr/bin/env crystal
 
-require "../src/lemonbar"
-require "../src/lemonbar/formatting_helper"
+require "../src/lemonade"
+require "../src/lemonade/formatting_helper"
 
-include Lemonbar
+include Lemonade
 include FormattingHelper
 
 # French's colors clock: Blue:White:Red
@@ -22,10 +22,10 @@ def french_clock
   clock
 end
 
-lemonbar = Lemonbar.new
-lemonbar.bg_color = Material::Black
-lemonbar.fg_color = "#eee"
-lemonbar.fonts << "DejaVuSansMonoForPowerline Nerd Font:size=10"
+lemon = Lemon.new
+lemon.bg_color = Material::Black
+lemon.fg_color = "#eee"
+lemon.fonts << "DejaVuSansMonoForPowerline Nerd Font:size=10"
 
 bar = Bar.new
 bar.left.separator = Block::TextSpacerBlock.new 1
@@ -38,4 +38,4 @@ bar.left << Block::TextBlock.new "block5"
 
 bar.center << french_clock
 
-lemonbar.run bar, interval: 1.second
+lemon.run bar, interval: 1.second

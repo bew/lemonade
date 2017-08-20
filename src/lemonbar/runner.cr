@@ -14,13 +14,13 @@ module Lemonbar
     property? force_dock : Bool?
     property? dock_bottom : Bool?
     property? geometry : Geometry?
-    property? font : String?
     property? nb_click_areas : Int32?
     property? underline_width : Int32? # should be underline_height ??
     property? bg_color : Color?
     property? fg_color : Color?
     property? underline_color : Color?
     property permanent = false
+    property fonts = [] of String
 
     def run(bar, interval)
       lemonbar = Process.new BIN, build_args, input: nil
@@ -55,8 +55,11 @@ module Lemonbar
         args << geometry_arg
       end
 
-      if font = font?
-        args << font
+      if @fonts.any?
+        @fonts.each do |font|
+          args << "-f"
+          args << font
+        end
       end
 
       if nb_click_areas = nb_click_areas?

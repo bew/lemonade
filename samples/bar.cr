@@ -25,6 +25,7 @@ end
 lemonbar = Lemonbar.new
 lemonbar.bg_color = Material::Black
 lemonbar.fg_color = "#eee"
+lemonbar.fonts << "DejaVuSansMonoForPowerline Nerd Font:size=10"
 
 bar = Bar.new
 bar.left.separator = Block::TextSpacerBlock.new 1

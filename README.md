@@ -14,14 +14,20 @@ This will first compile the sample program, then run it.
 
 ## TODO next
 
+Now:
 - specs (containers, caching, rendering, formatting, ...)
+- hierarchy dump
+- Make my totolist in GH issues
+
+After:
 - clickable areas
 - event-based update
 
-Easy nice examples with that:
+Later (optimizaion):
+- rendering trace
 
+Simple samples:
 * Make a counter, with buttons + & -, to increment/decrement the counter, and randomly change the BG color (visual feedback).
-
 * Progressbar, with a near-progressbar rendering (using unicode blocks?), and wheel-up/down to change the value (and trigger event (every steps?))
 
 

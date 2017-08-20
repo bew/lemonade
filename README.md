@@ -4,7 +4,13 @@ Lemonbar configuration framework
 
 ## Usage
 
-See [the samples](samples/).
+See [the samples](samples/), they're ordered as a tutorial (not commented yet).
+
+If you have `crystal` installed in your environment, you can run each sample directly, e.g:
+```
+$ ./samples/01_hello_world.cr
+```
+This will first compile the sample program, then run it.
 
 ## TODO next
 
@@ -20,12 +26,10 @@ Easy nice examples with that:
 
 Note: Lemonbar refresh rates:
 
-Refreshs are instant with lemonbar :100: : `100_000` simple refreshs in 5.3 seconds (`~19_000` Refresh per second (not sure about the FPS))
+Refreshs are instant with lemonbar :100: : `100_000` simple (like hello world) refreshs in 5.3 seconds (`~19_000` Refresh per second (don't know about the actual FPS))
 
 
-## Ideas about the framework futur
-
-Project name: lemonade
+## Ideas about the framework
 
 A lemonade config can have 1 or more lemon (a lemonbar instance).
 
@@ -59,8 +63,6 @@ $ ./my_lemonade [args...]
 
 ### Notes about possibilities
 
-A lemonade is a group of 1 or more lemon (a lemonbar instance).
-
 A lemonade config can dynamically create lemons, position them, and change them based on events coming from other lemons (in the same lemonade).
 
 Example lemonade:
@@ -81,7 +83,7 @@ Example lemonade:
 
 L1-5 are lemons. Each lemon can be given a unique ID (e.g: L5 has ID `bottom`).
 
-**Events and actions** can be configured accross multiple lemons of the same lemonade, e.g: A click on a specific block of L1 can trigger an event on a specific block of L5, thus, change what is displayed.
+**Events and actions** can be configured accross multiple lemons of the same lemonade, e.g: A click on a specific block of L1 can trigger an event on a specific block of L5, and change what is displayed.
 
 
 ## Contributing

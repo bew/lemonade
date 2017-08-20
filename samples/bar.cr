@@ -23,7 +23,7 @@ def french_clock
 end
 
 lemonbar = Lemonbar.new
-lemonbar.bg_color = Material::Teal_500
+lemonbar.bg_color = Material::Black
 lemonbar.fg_color = "#eee"
 
 bar = Bar.new

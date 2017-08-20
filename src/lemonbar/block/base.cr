@@ -11,7 +11,7 @@ module Lemonbar
 
     # Cached version of `BaseBlock`.
     #
-    # It saves the rendering output, and use it to render the block,
+    # Saves the rendering output, and use it to render the block,
     # until it is marked dirty.
     abstract class CachedBlock < BaseBlock
       @cache : String? = nil
@@ -39,5 +39,10 @@ module Lemonbar
 
       abstract def cached_render(io)
     end
+
+    # Other blocks
+    # - StaticBlock => once rendered it never change
+    # - IntervalBlock => need render every N seconds
+    # - EventBlock => can receive click events
   end
 end

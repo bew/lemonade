@@ -5,9 +5,11 @@ module Lemonade
   module Block
     class Container < CachedBlock
       property blocks = [] of BaseBlock
-      property? separator : CachedBlock?
+      property? separator : BaseBlock?
 
-      forward_missing_to @blocks
+      def <<(block)
+        @blocks << block
+      end
 
       def dirty?
         @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || @dirty
@@ -27,6 +29,10 @@ module Lemonade
 
     class TextBlock < CachedBlock
       def initialize(@text : String)
+      end
+
+      def text=(@text)
+        @dirty = true
       end
 
       def cached_render(io)

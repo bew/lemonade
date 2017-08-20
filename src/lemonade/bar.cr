@@ -13,17 +13,17 @@ module Lemonade
     def next_bar
       io = IO::Memory.new
 
-      unless left.empty?
+      unless left.blocks.empty?
         io << "%{l}"
         left.render io
       end
 
-      unless center.empty?
+      unless center.blocks.empty?
         io << "%{c}"
         center.render io
       end
 
-      unless right.empty?
+      unless right.blocks.empty?
         io << "%{r}"
         right.render io
       end

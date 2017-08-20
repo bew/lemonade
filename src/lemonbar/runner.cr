@@ -10,7 +10,7 @@ module Lemonbar
   class Runner
     BIN = "lemonbar"
 
-    property? wm_name : String?
+    property? win_name : String?
     property? force_dock : Bool?
     property? dock_bottom : Bool?
     property? geometry : Geometry?
@@ -38,8 +38,8 @@ module Lemonbar
     private def build_args
       args = [] of String
 
-      if wm_name = wm_name?
-        args << "-n" << wm_name
+      if win_name = win_name?
+        args << "-n" << win_name
       end
 
       if (force_dock = force_dock?) && force_dock

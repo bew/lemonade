@@ -8,11 +8,12 @@ module Lemonade
       property? separator : BaseBlock?
 
       def <<(block)
+        block.parents << self
         @blocks << block
       end
 
       def dirty?
-        @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || @dirty
+        @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || @___dirty
       end
 
       def cached_render(io)
@@ -32,7 +33,7 @@ module Lemonade
       end
 
       def text=(@text)
-        @dirty = true
+        self.dirty = true
       end
 
       def cached_render(io)

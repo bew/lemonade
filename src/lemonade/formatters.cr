@@ -12,6 +12,7 @@ module Lemonade
 
     abstract class BlockFormatter < Base
       def initialize(@content_block : Block::BaseBlock)
+        @content_block.parents << self
       end
 
       def dirty?

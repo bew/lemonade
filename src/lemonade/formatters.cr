@@ -3,6 +3,14 @@ require "./block/base"
 module Lemonade
   module Formatter
     abstract class Base < Block::BaseBlock
+      def formatting(io)
+        io << "%{"
+        yield
+        io << "}"
+      end
+    end
+
+    abstract class BlockFormatter < Base
       def initialize(@content_block : Block::BaseBlock)
       end
 
@@ -25,7 +33,7 @@ module Lemonade
       end
     end
 
-    class FgColor < Base
+    class FgColor < BlockFormatter
       def initialize(@content_block, @fg : Color)
       end
 
@@ -38,7 +46,7 @@ module Lemonade
       end
     end
 
-    class BgColor < Base
+    class BgColor < BlockFormatter
       def initialize(@content_block, @bg : Color)
       end
 
@@ -51,7 +59,7 @@ module Lemonade
       end
     end
 
-    class Underline < Base
+    class Underline < BlockFormatter
       def initialize(@content_block, @color : Color?)
       end
 
@@ -70,7 +78,7 @@ module Lemonade
       end
     end
 
-    class Strike < Base
+    class Strike < BlockFormatter
       def initialize(@content_block, @color : Color?)
       end
 
@@ -85,6 +93,44 @@ module Lemonade
         io << "%{-o}"
         if color = @color
           io << "%{U-}"
+        end
+      end
+    end
+
+    module Raw
+      # e.g: %{F#abcdef} or %{B-}
+      class StuffColor < Base
+        def initialize(@stuff : Char, @color : Color)
+        end
+
+        def render(io)
+          formatting(io) do
+            io << @stuff << @color
+          end
+        end
+      end
+
+      # e.g: %{+u} or %{!o}
+      class Attribute < Base
+        def self.enable(attr)
+          new(attr, '+')
+        end
+
+        def self.disable(attr)
+          new(attr, '-')
+        end
+
+        def self.toggle(attr)
+          new(attr, '!')
+        end
+
+        def initialize(@attribute : Char, @state : Char)
+        end
+
+        def render(io)
+          formatting(io) do
+            io << @state << @attribute
+          end
         end
       end
     end

@@ -23,7 +23,6 @@ class FrenchClockBlock < Block::Container
 end
 
 lemon = Lemon.new
-lemon.bg_color = Material::Black
 lemon.fg_color = "#eee"
 lemon.fonts << "DejaVu Sans Mono:size=10"
 

@@ -7,9 +7,6 @@ include Lemonade
 include FormattingHelper
 
 lemon = Lemon.new
-lemon.bg_color = Material::Black
-lemon.fg_color = "#eee"
-lemon.fonts << "DejaVu Sans Mono:size=10"
 lemon.underline_height = 3
 
 bar = Bar.new

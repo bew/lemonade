@@ -22,15 +22,16 @@ module Lemonbar
     property? underline_color : Color?
     property permanent = false
 
-    def run(bar : Bar, interval)
-      run BarProvider.new(bar), interval
-    end
-
-    def run(bar_provider, interval)
+    def run(bar, interval)
       lemonbar = Process.new BIN, build_args, input: nil
-      bar_provider.each do |bar_str|
+      while bar_str = bar.next_bar
         lemonbar.input.puts bar_str
         sleep interval
+
+        if lemonbar.terminated?
+          STDERR.puts "Lemonbar process terminated unexpectedly, exiting.."
+          exit 1
+        end
       end
     end
 

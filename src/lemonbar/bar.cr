@@ -1,21 +1,8 @@
 require "./blocks"
 
 module Lemonbar
-  class BarProvider
-    include Iterator(String)
-
-    def initialize(@bar : Bar)
-    end
-
-    def next
-      if bla = @bar.next_bar
-        bla
-      else
-        stop
-      end
-    end
-  end
-
+  # TODO (I don't know where): Allow to swap bar on events?
+  # or Implement a `SwappableBar < Bar` ?
   class Bar
     getter left = Block::Container.new
     getter center = Block::Container.new

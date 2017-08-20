@@ -4,17 +4,28 @@ module Lemonade
 
     # Formats *block* with foreground *color*.
     def fg(block, color = ColorReset)
-      Formatter::FgColor.new block, color
+      Formatter::Arround.new({fg_color(color)}, block, {fg_reset})
     end
 
     # Formats *block* with background *color*.
     def bg(block, color = ColorReset)
-      Formatter::BgColor.new block, color
+      Formatter::Arround.new({bg_color(color)}, block, {bg_reset})
     end
 
     # Underlines *block*, colored using *color*.
     def ul(block, color = ColorReset)
-      Formatter::Underline.new block, color
+      pre_formatters = {line_color(color), enable_underline}
+      post_formatters = {disable_underline, line_reset}
+
+      Formatter::Arround.new pre_formatters, block, post_formatters
+    end
+
+    # Overlines *block*, colored using *color*.
+    def ol(block, color = ColorReset)
+      pre_formatters = {line_color(color), enable_overline}
+      post_formatters = {disable_overline, line_reset}
+
+      Formatter::Arround.new pre_formatters, block, post_formatters
     end
 
     # Formats *block* with foreground *fg* color, and background *bg* color.
@@ -26,7 +37,7 @@ module Lemonade
     RAW_STUFF = {
       fg: {"foreground", 'F'},
       bg: {"background", 'B'},
-      line: {"underline & strike attributes", 'U'},
+      line: {"underline & overline attributes", 'U'},
     }
 
     {% for raw_what, data in RAW_STUFF %}
@@ -43,7 +54,7 @@ module Lemonade
       end
     {% end %}
 
-    {% for attr, attr_char in {underline: 'u', strike: 'o'} %}
+    {% for attr, attr_char in {underline: 'u', overline: 'o'} %}
       # Enables attribute {{attr.id}}
       def enable_{{attr.id}}
         Formatter::Raw::Attribute.enable({{attr_char}})

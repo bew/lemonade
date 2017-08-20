@@ -1,4 +1,5 @@
 require "./block/base"
+require "./blocks"
 
 module Lemonade
   module Formatter
@@ -10,91 +11,11 @@ module Lemonade
       end
     end
 
-    abstract class BlockFormatter < Base
-      def initialize(@content_block : Block::BaseBlock)
-        @content_block.parents << self
-      end
-
-      def dirty?
-        @content_block.dirty?
-      end
-
-      def render(io)
-        pre_render(io)
-        @content_block.render(io)
-        post_render(io)
-      end
-
-      # To be overriden by formatter who needs to hook before rendering
-      def pre_render(io)
-      end
-
-      # To be overriden by formatter who needs to hook after rendering
-      def post_render(io)
-      end
-    end
-
-    class FgColor < BlockFormatter
-      def initialize(@content_block, @fg : Color)
-      end
-
-      def pre_render(io)
-        io << "%{F" << @fg.to_s << "}"
-      end
-
-      def post_render(io)
-        io << "%{F-}"
-      end
-    end
-
-    class BgColor < BlockFormatter
-      def initialize(@content_block, @bg : Color)
-      end
-
-      def pre_render(io)
-        io << "%{B" << @bg.to_s << "}"
-      end
-
-      def post_render(io)
-        io << "%{B-}"
-      end
-    end
-
-    class Underline < BlockFormatter
-      def initialize(@content_block, @color : Color?)
-      end
-
-      def pre_render(io)
-        if color = @color
-          io << "%{U" << color.to_s << "}"
-        end
-        io << "%{+u}"
-      end
-
-      def post_render(io)
-        io << "%{-u}"
-        if color = @color
-          io << "%{U-}"
-        end
-      end
-    end
-
-    class Strike < BlockFormatter
-      def initialize(@content_block, @color : Color?)
-      end
-
-      def pre_render(io)
-        if color = @color
-          io << "%{U" << color.to_s << "}"
-        end
-        io << "%{+o}"
-      end
-
-      def post_render(io)
-        io << "%{-o}"
-        if color = @color
-          io << "%{U-}"
-        end
+    class Arround < Block::Container
+      def initialize(pre_formatters, block, post_formatters)
+        @blocks.concat(pre_formatters)
+        @blocks << block
+        @blocks.concat(post_formatters)
       end
     end
 

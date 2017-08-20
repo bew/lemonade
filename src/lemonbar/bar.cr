@@ -1,9 +1,11 @@
 require "./blocks"
 
 module Lemonbar
-  # TODO (I don't know where): Allow to swap bar on events?
-  # or Implement a `SwappableBar < Bar` ?
-  class Bar
+  abstract class BarProvider
+    abstract def next_bar
+  end
+
+  class Bar < BarProvider
     getter left = Block::Container.new
     getter center = Block::Container.new
     getter right = Block::Container.new
@@ -30,4 +32,17 @@ module Lemonbar
     end
   end
 
+  # Or implement this as a Block, with swappable blocks?
+  # Or make like `Bar`, but with swappable left,center,right containers?
+  #   => this could be done in `Bar`
+  class SwappableBar
+    property bar : BarProvider
+
+    def initialize(@bar)
+    end
+
+    def next_bar
+      @bar.next_bar
+    end
+  end
 end

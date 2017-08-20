@@ -31,9 +31,9 @@ bar = Bar.new
 bar.left.separator = Block::TextSpacerBlock.new 1
 
 bar.left << Block::TextBlock.new "block1"
-bar.left << Block::TextBlock.new "block2", bg: Material::Red_500
+bar.left << bg Block::TextBlock.new("block2"), Material::Red_500
 bar.left << Block::TextBlock.new "block3"
-bar.left << Block::TextBlock.new "block4", fg: Material::Blue_500, bg: Material::White
+bar.left << fgbg Block::TextBlock.new("block4"), fg: Material::Blue_500, bg: Material::White
 bar.left << Block::TextBlock.new "block5"
 
 bar.center << french_clock

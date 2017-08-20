@@ -26,25 +26,11 @@ module Lemonbar
     end
 
     class TextBlock < CachedBlock
-      @bg : Color?
-      @fg : Color?
-
-      def initialize(@text : String, @bg = nil, @fg = nil)
+      def initialize(@text : String)
       end
 
       def cached_render(io)
-        if fg = @fg
-          io << "%{F" << fg.to_s << "}"
-        end
-
-        if bg = @bg
-          io << "%{B" << bg.to_s << "}"
-        end
-
         io << @text
-
-        io << "%{B}" if @bg
-        io << "%{F}" if @fg
       end
     end
 

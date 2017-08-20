@@ -7,7 +7,7 @@ include Lemonade
 include FormattingHelper
 
 # French's colors clock: Blue:White:Red
-def french_clock
+def french_clock(separator = true)
   hour = Block::ClockBlock.new "%H"
   minutes = Block::ClockBlock.new "%M"
   seconds = Block::ClockBlock.new "%S"
@@ -17,7 +17,9 @@ def french_clock
     fg(minutes, Material::White),
     fg(seconds, Material::Red_500),
   }
-  clock.separator = Block::TextBlock.new ":"
+  if separator
+    clock.separator = Block::TextBlock.new ":"
+  end
 
   clock
 end
@@ -25,17 +27,16 @@ end
 lemon = Lemon.new
 lemon.bg_color = Material::Black
 lemon.fg_color = "#eee"
-lemon.fonts << "DejaVuSansMonoForPowerline Nerd Font:size=10"
+lemon.fonts << "DejaVu Sans Mono:size=10"
 
 bar = Bar.new
-bar.left.separator = Block::TextSpacerBlock.new 1
 
-bar.left << Block::TextBlock.new "block1"
-bar.left << bg Block::TextBlock.new("block2"), Material::Red_500
-bar.left << Block::TextBlock.new "block3"
-bar.left << fgbg Block::TextBlock.new("block4"), fg: Material::Blue_500, bg: Material::White
-bar.left << Block::TextBlock.new "block5"
+clock_with_separators = french_clock
+bar.left << clock_with_separators
+bar.right << clock_with_separators
 
-bar.center << french_clock
+bar.center << Block::TextBlock.new "Without separators:"
+bar.center << french_clock(separator: false)
+bar.center.separator = Block::TextSpacerBlock.new 2
 
 lemon.run bar, interval: 1.second

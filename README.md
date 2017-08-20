@@ -6,6 +6,84 @@ Lemonbar configuration framework
 
 See [the samples](samples/).
 
+## TODO next
+
+- clickable areas
+- event-based update
+
+Easy nice examples with that:
+
+* Make a counter, with buttons + & -, to increment/decrement the counter, and randomly change the BG color (visual feedback).
+
+* Progressbar, with a near-progressbar rendering (using unicode blocks?), and wheel-up/down to change the value (and trigger event (every steps?))
+
+
+Note: Lemonbar refresh rates:
+
+Refreshs are instant with lemonbar :100: : `100_000` simple refreshs in 5.3 seconds (`~19_000` Refresh per second (not sure about the FPS))
+
+
+## Ideas about the framework futur
+
+Project name: lemonade
+
+A lemonade config can have 1 or more lemon (a lemonbar instance).
+
+### The `lemonade` binary
+
+The `lemonade` binary is the lemonade compiler (uses `crystal` compiler under-the-hood), with helpers to create a config dir, compile a lemonade, and run it, e.g:
+
+* Initialize a config directory in the CWD
+```
+$ mkdir ~/.lemonade && cd ~/.lemonade
+$ lemonade init
+```
+
+
+* Build (every time) then run a specific lemonade
+```
+$ lemonade run <source.cr> [args...]
+or without `run`:
+$ lemonade <source.cr> [args...]
+```
+
+* Build a specific lemonade (group of bars)
+```
+$ lemonade build <source.cr> -o my_lemonade
+```
+
+* Run it as a binary?
+```
+$ ./my_lemonade [args...]
+```
+
+### Notes about possibilities
+
+A lemonade is a group of 1 or more lemon (a lemonbar instance).
+
+A lemonade config can dynamically create lemons, position them, and change them based on events coming from other lemons (in the same lemonade).
+
+Example lemonade:
+```
++-------------------------------------------------------+
+|        +----+ +--+      +------+ +----------+         |
+|        | L1 | |L2|      |  L3  | |    L4    |         |
+|        +----+ +--+      +------+ +----------+         |
+|                                                       |
+|                                                       |
+|                                                       |
+|                                                       |
+|               +----------------------+                |
+|               |    L5 id:bottom      |                |
+|               +----------------------+                |
++-------------------------------------------------------+
+```
+
+L1-5 are lemons. Each lemon can be given a unique ID (e.g: L5 has ID `bottom`).
+
+**Events and actions** can be configured accross multiple lemons of the same lemonade, e.g: A click on a specific block of L1 can trigger an event on a specific block of L5, thus, change what is displayed.
+
+
 ## Contributing
 
 1. Fork it ( https://github.com/bew/lemonbar.cr/fork )

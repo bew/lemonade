@@ -22,16 +22,29 @@ module Lemonade
     property permanent = false
     property fonts = [] of String
 
-    def run(bar, interval)
-      lemon = Process.new BIN, build_args, input: nil
-      while bar_str = bar.next_bar
-        lemon.input.puts bar_str
-        sleep interval
+    getter? request_termination = false
 
-        if lemon.terminated?
+    def run(bar, interval)
+      lemon = Process.new BIN, build_args, input: nil, error: nil
+      spawn do
+        while line = lemon.error.gets
+          STDERR.puts "[lemon pid:#{lemon.pid}] #{line}"
+        end
+      end
+
+      spawn do
+        until lemon.terminated?
+          sleep 0.1
+        end
+        unless self.request_termination?
           STDERR.puts "Lemonade process terminated unexpectedly, exiting.."
           exit 1
         end
+      end
+
+      while bar_str = bar.next_bar
+        lemon.input.puts bar_str
+        sleep interval
       end
     end
 

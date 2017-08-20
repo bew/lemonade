@@ -14,6 +14,7 @@ This will first compile the sample program, then run it.
 
 ## TODO next
 
+- specs (containers, caching, rendering, formatting, ...)
 - clickable areas
 - event-based update
 

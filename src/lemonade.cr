@@ -3,7 +3,7 @@ require "./material_color"
 
 module Lemonade
   def self.new
-    Runner.new
+    Lemon.new
   end
 end
 

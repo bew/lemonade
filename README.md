@@ -15,9 +15,14 @@ This will first compile the sample program, then run it.
 ## TODO next
 
 Now:
-- specs (containers, caching, rendering, formatting, ...)
-- hierarchy dump
-- Make my totolist in GH issues
+- Specs
+  * containers
+  * caching
+  * rendering
+  * formatting
+  * ...
+- Block hierarchy dump
+- Make my totolist in GH issues?
 
 After:
 - clickable areas

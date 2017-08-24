@@ -34,7 +34,7 @@ module Lemonade
 
       spawn do
         until lemon.terminated?
-          sleep 0.1
+          sleep 0.1 # Wait a bit, to release the CPU
         end
         unless self.request_termination?
           STDERR.puts "Lemonade process terminated unexpectedly, exiting.."

@@ -20,48 +20,28 @@ end
 describe Lemonade::FormattingHelper do
   describe "raw formatters" do
     it "sets & resets foreground color" do
-      assert_format "%{F#abc}" do
-        H.fg_color("#abc")
-      end
-      assert_format "%{F-}" do
-        H.fg_reset
-      end
+      assert_format "%{F#abc}" { H.fg_color("#abc") }
+      assert_format "%{F-}" { H.fg_reset }
     end
 
     it "sets & resets background color" do
-      assert_format "%{B#abc}" do
-        H.bg_color("#abc")
-      end
-      assert_format "%{B-}" do
-        H.bg_reset
-      end
+      assert_format "%{B#abc}" { H.bg_color("#abc") }
+      assert_format "%{B-}" { H.bg_reset }
     end
 
     it "sets & resets line color" do
-      assert_format "%{U#abc}" do
-        H.line_color("#abc")
-      end
-      assert_format "%{U-}" do
-        H.line_reset
-      end
+      assert_format "%{U#abc}" { H.line_color("#abc") }
+      assert_format "%{U-}" { H.line_reset }
     end
 
     it "enables & disables underline" do
-      assert_format "%{+u}" do
-        H.enable_underline
-      end
-      assert_format "%{-u}" do
-        H.disable_underline
-      end
+      assert_format "%{+u}" { H.enable_underline }
+      assert_format "%{-u}" { H.disable_underline }
     end
 
     it "enables & disables underline" do
-      assert_format "%{+o}" do
-        H.enable_overline
-      end
-      assert_format "%{-o}" do
-        H.disable_overline
-      end
+      assert_format "%{+o}" { H.enable_overline }
+      assert_format "%{-o}" { H.disable_overline }
     end
   end
 

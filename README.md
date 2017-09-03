@@ -28,7 +28,7 @@ After:
 - clickable areas
 - event-based update
 
-Later (optimizaion):
+Later (optimization):
 - rendering trace
 
 Simple samples:

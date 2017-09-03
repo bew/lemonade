@@ -13,7 +13,7 @@ module Lemonade
       end
 
       def dirty?
-        @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || @___dirty
+        @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || super
       end
 
       def cached_render(io)
@@ -33,7 +33,7 @@ module Lemonade
       end
 
       def text=(@text)
-        self.dirty = true
+        dirty!
       end
 
       def cached_render(io)

@@ -25,8 +25,8 @@ bar.center << container
 bar.center << container
 
 spawn do
-  # Change text of last block of *container* after 3s
   sleep 3
+  puts "Changing text of last block!"
   last_block = container.blocks.last.as(Block::TextBlock)
   last_block.text = "New text of last block"
 end

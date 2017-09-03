@@ -25,7 +25,7 @@ module Lemonade
         true
       end
 
-      def dirty=(value)
+      def dirty!
       end
 
       REMOVE_IVARS_FROM_INSPECT = %w(parents)
@@ -53,41 +53,33 @@ module Lemonade
     abstract class CachedBlock < BaseBlock
       @cache : String? = nil
 
-      # Note: use `___` to prevent users to accidentally use `@dirty = true`
-      # and force them to use `self.dirty = true` for proper cache reloading.
-      @___dirty = true
+      # Note: Don't set this attribute manually, use `dirty!` instead for
+      # proper cache reloading.
+      @dirty = true
 
-      # Mark the `Block` as 'dirty', to force redraw next time.
-      # If `true`, propagate to parents for redraw.
-      #
-      # Note: It is important to use the setter and not setting the instance var
-      # directly, for proper cache reloading.
-      def dirty=(@___dirty)
-        if @___dirty
-          @parents.each &.dirty=(true)
-        end
+      # Mark the `Block` and its parents as 'dirty', to force redraw next time.
+      def dirty!
+        @dirty = true
+        @parents.each &.dirty!
       end
 
       def dirty?
-        # @cache | @___dirty | dirty?
+        # @cache | @dirty | dirty?
         #-----------------------------
-        #  nil   |   false   | true
-        #  nil   |   true    | true
-        #  "a"   |   false   | false
-        #  "a"   |   true    | true
-        @cache.nil? || @___dirty
+        #  nil   | false  | true
+        #  nil   | true   | true
+        #  "a"   | false  | false
+        #  "a"   | true   | true
+        @cache.nil? || @dirty
       end
 
       def render(io)
-        # return io << @cache unless dirty?
-        unless dirty?
-          return io << @cache
-        end
+        return io << @cache unless dirty?
 
         @cache = String.build do |io|
           cached_render(io)
         end
-        self.dirty = false
+        @dirty = false
 
         io << @cache
       end
@@ -95,9 +87,9 @@ module Lemonade
       abstract def cached_render(io)
     end
 
-    # Other blocks
-    # - StaticBlock => once rendered it never change
-    # - IntervalBlock => need render every N seconds
-    # - EventBlock => can receive click events
+    # TODO: Other blocks
+    # StaticBlock => once rendered it never change
+    # IntervalBlock => need render every N seconds
+    # EventBlock => can receive click events (as a Trait? so all blocks could receive event?)
   end
 end

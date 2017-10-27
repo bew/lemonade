@@ -1,7 +1,10 @@
 require "./blocks"
 
 module Lemonade
-  # TODO: rename (RendererProxyBlock ?)
+  # This block is the parent of all blocks of a bar, when a block needs to be
+  # re-drawn, it sets itself as `dirty` (with a `dirty!` call), this dirty flag
+  # goes up to its parents blocks, then up to their parents, until a
+  # `RendererFrameBlock` which will notify the renderer of the bar to redraw itself.
   private class RendererFrameBlock < Block::BaseBlock
     @renderer : BarRenderer
     @content : Block::BaseBlock

@@ -3,16 +3,20 @@ require "./blocks"
 module Lemonade
   # TODO: rename (RendererProxyBlock ?)
   private class RendererFrameBlock < Block::BaseBlock
-    @renderer_control : Channel(RendererEvent)
+    @renderer_controller : Channel(RendererEvent)
     @content : Block::BaseBlock
 
-    def initialize(@content, @renderer_control)
+    def initialize(@content, @renderer_controller)
       @content.parents << self
     end
 
     def dirty!
       puts "need bar redraw!"
-      @renderer_control.send RendererEvent::Draw
+
+      # We'll probably have a futur issue here, when we cannot send an event to
+      # the renderer because it is stopped.
+      # ==> the operationnal fiber (running this method) will block! :/
+      @renderer_controller.send RendererEvent::Draw
     end
 
     def render(io)
@@ -26,7 +30,7 @@ module Lemonade
   end
 
   class BarRenderer
-    @renderer_control : Channel(RendererEvent)?
+    getter controller = Channel(RendererEvent).new
     getter? stopped = true
 
     def self.start(content, io)
@@ -37,13 +41,12 @@ module Lemonade
 
     def start(content : Block::BaseBlock, io)
       @stopped = false
-      events = @renderer_control = Channel(RendererEvent).new
-      frame_block = RendererFrameBlock.new(content, events)
+      frame_block = RendererFrameBlock.new(content, controller)
 
       # FIXME: too much indent here!
       spawn name: "renderer" do # FIXME: indicate which renderer it is?
         loop do
-          case event = events.receive
+          case event = controller.receive
           when RendererEvent::Draw
             begin
               rendered = String.build { |io| frame_block.render io }
@@ -57,15 +60,12 @@ module Lemonade
         end
       end
 
-      events.send RendererEvent::Draw
+      controller.send RendererEvent::Draw
     end
 
     def stop
-      if events = @renderer_control
-        @stopped = true
-        events.send RendererEvent::Stop
-        @renderer_control = nil
-      end
+      @stopped = true
+      controller.send RendererEvent::Stop
     end
   end
 

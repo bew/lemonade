@@ -66,7 +66,7 @@ module Lemonade
     end
 
     def stop
-      controller.send Event::Stop
+      controller.send Event::Stop unless stopped?
     end
 
     def notify_draw

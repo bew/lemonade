@@ -6,8 +6,9 @@ require "../src/lemonade/formatting_helper"
 include Lemonade
 H = FormattingHelper
 
-lemon = Lemon.new
-lemon.underline_height = 3
+lemon = Lemon.build do |b|
+  b.underline_height = 3
+end
 
 bar = Bar.new
 

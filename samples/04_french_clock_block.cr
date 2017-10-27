@@ -22,9 +22,10 @@ class FrenchClockBlock < Block::Container
   end
 end
 
-lemon = Lemon.new
-lemon.fg_color = "#eee"
-lemon.fonts << "DejaVu Sans Mono:size=10"
+lemon = Lemon.build do |b|
+  b.fg_color = "#eee"
+  b.font = "DejaVu Sans Mono:size=10"
+end
 
 bar = Bar.new
 

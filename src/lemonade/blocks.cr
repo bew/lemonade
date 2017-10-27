@@ -10,6 +10,7 @@ module Lemonade
       def <<(block)
         block.parents << self
         @blocks << block
+        dirty!
       end
 
       def dirty?

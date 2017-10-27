@@ -6,7 +6,9 @@ module Lemonade
     #
     # Example of a basic container:
     # ```
-    # class Container
+    # class Container < Lemonade::BaseBlock
+    #   @blocks = [] of Lemonade::BaseBlock
+    #
     #   def <<(block)
     #     block.parents << self # Add the container to block's parents.
     #     @blocks << block      # Add the block to the container's list of block.
@@ -29,11 +31,12 @@ module Lemonade
       end
 
       REMOVE_IVARS_FROM_INSPECT = %w(parents)
+
       def inspect(io : IO) : Nil
         io << "#<" << {{@type.name.id.stringify}} << ":0x"
         object_id.to_s(16, io)
         {% for ivar, i in @type.instance_vars %}
-          {% unless REMOVE_IVARS_FROM_INSPECT.includes?(ivar.stringify)  %}
+          {% unless REMOVE_IVARS_FROM_INSPECT.includes?(ivar.stringify) %}
             {% if i > 0 %}
               io << ","
             {% end %}
@@ -65,7 +68,7 @@ module Lemonade
 
       def dirty?
         # @cache | @dirty | dirty?
-        #-----------------------------
+        # ------------------------
         #  nil   | false  | true
         #  nil   | true   | true
         #  "a"   | false  | false
@@ -87,7 +90,7 @@ module Lemonade
       abstract def cached_render(io)
     end
 
-    # TODO: Other blocks
+    # TODO: Other blocks? mixin?
     # StaticBlock => once rendered it never change
     # IntervalBlock => need render every N seconds
     # EventBlock => can receive click events (as a Trait? so all blocks could receive event?)

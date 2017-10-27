@@ -63,7 +63,7 @@ module Lemonade
     end
 
     class OffsetBlock < CachedBlock
-      def initialize(@offset_px = 10)
+      def initialize(px @offset_px = 10)
       end
 
       def cached_render(io)

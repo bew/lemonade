@@ -11,6 +11,8 @@ module Lemonade
         block.parents << self
         @blocks << block
         dirty!
+
+        self
       end
 
       def dirty?

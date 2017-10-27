@@ -17,17 +17,27 @@ module Lemonade
       b = Builder.new
       yield b
 
-      start_process(b.build_args)
+      process = start_process(b.build_args)
+      lemon = new(process)
+      lemon.setup_process
     end
 
     def self.start_process(args = [] of String)
-      # this method creates the Lemon object, and use it to setup the process's controllers
-      # Not sure if it's a good way to do it..
-
       puts "Starting Lemon with args: #{args}"
-      process = Process.new BIN, args, input: nil, error: nil
-      lemon = new(process)
 
+      Process.new BIN, args, input: nil, output: nil, error: nil
+    end
+
+    def self.new
+      lemon = new(start_process)
+      lemon.setup_process
+      lemon
+    end
+
+    def initialize(@process)
+    end
+
+    def setup_process
       spawn do
         while line = process.error.gets
           STDERR.puts "[lemon pid:#{process.pid}] #{line}"
@@ -40,20 +50,11 @@ module Lemonade
         until process.terminated?
           sleep 0.1 # Wait a bit, to release the CPU
         end
-        unless lemon.termination_requested?
+        unless termination_requested?
           STDERR.puts "Lemon process (pid:#{pid}) terminated unexpectedly, exiting.."
           exit 1 # TODO: notify the Lemonade controlling process?
         end
       end
-
-      lemon
-    end
-
-    def self.new
-      start_process
-    end
-
-    def initialize(@process)
     end
 
     def run(bar, interval)

@@ -28,6 +28,7 @@ module Lemonade
       end
 
       def dirty!
+        @parents.each &.dirty!
       end
 
       REMOVE_IVARS_FROM_INSPECT = %w(parents)
@@ -62,8 +63,9 @@ module Lemonade
 
       # Mark the `Block` and its parents as 'dirty', to force redraw next time.
       def dirty!
+        puts "dirty!"
         @dirty = true
-        @parents.each &.dirty!
+        super
       end
 
       def dirty?

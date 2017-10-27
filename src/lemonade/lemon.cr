@@ -57,13 +57,6 @@ module Lemonade
       end
     end
 
-    def run(bar, interval)
-      while bar_str = bar.next_bar
-        @process.input.puts bar_str
-        sleep interval
-      end
-    end
-
     def close
       @termination_requested = true
       @process.kill

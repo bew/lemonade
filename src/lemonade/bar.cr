@@ -51,8 +51,9 @@ module Lemonade
             begin
               rendered = String.build { |io| frame_block.render io }
               io.puts rendered
-            rescue
-              # TODO: Do sth? rescue only SOME exceptions?
+            rescue ex
+              STDERR.puts "Error while rendering the bar: #{ex.inspect_with_backtrace}"
+              # FIXME: Do sth else?
             end
           when Event::Stop
             @stopped = true

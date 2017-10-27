@@ -10,7 +10,7 @@ module Lemonade
   class Lemon
     BIN = "lemonbar"
 
-    getter? request_termination = false
+    getter? termination_requested = false
     getter process : Process
 
     def self.build
@@ -40,7 +40,7 @@ module Lemonade
         until process.terminated?
           sleep 0.1 # Wait a bit, to release the CPU
         end
-        unless lemon.request_termination?
+        unless lemon.termination_requested?
           STDERR.puts "Lemon process (pid:#{pid}) terminated unexpectedly, exiting.."
           exit 1 # TODO: notify the Lemonade controlling process?
         end
@@ -61,6 +61,11 @@ module Lemonade
         @process.input.puts bar_str
         sleep interval
       end
+    end
+
+    def close
+      @termination_requested = true
+      @process.kill
     end
   end
 

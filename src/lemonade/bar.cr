@@ -3,20 +3,17 @@ require "./blocks"
 module Lemonade
   # TODO: rename (RendererProxyBlock ?)
   private class RendererFrameBlock < Block::BaseBlock
-    @renderer_controller : Channel(RendererEvent)
+    @renderer : BarRenderer
     @content : Block::BaseBlock
 
-    def initialize(@content, @renderer_controller)
+    def initialize(@content, @renderer)
       @content.parents << self
     end
 
     def dirty!
       puts "need bar redraw!"
 
-      # We'll probably have a futur issue here, when we cannot send an event to
-      # the renderer because it is stopped.
-      # ==> the operationnal fiber (running this method) will block! :/
-      @renderer_controller.send RendererEvent::Draw
+      @renderer.notify_draw
     end
 
     def render(io)
@@ -24,13 +21,13 @@ module Lemonade
     end
   end
 
-  enum RendererEvent
-    Draw
-    Stop
-  end
-
   class BarRenderer
-    getter controller = Channel(RendererEvent).new
+    enum Event
+      Draw
+      Stop
+    end
+
+    getter controller = Channel(Event).new
     getter? stopped = true
 
     def self.start(content, io)
@@ -41,31 +38,35 @@ module Lemonade
 
     def start(content : Block::BaseBlock, io)
       @stopped = false
-      frame_block = RendererFrameBlock.new(content, controller)
+      frame_block = RendererFrameBlock.new(content, self)
 
       # FIXME: too much indent here!
       spawn name: "renderer" do # FIXME: indicate which renderer it is?
         loop do
           case event = controller.receive
-          when RendererEvent::Draw
+          when Event::Draw
             begin
               rendered = String.build { |io| frame_block.render io }
               io.puts rendered
             rescue
               # TODO: Do sth? rescue only SOME exceptions?
             end
-          when RendererEvent::Stop
+          when Event::Stop
+            @stopped = true
             break
           end
         end
       end
 
-      controller.send RendererEvent::Draw
+      notify_draw
     end
 
     def stop
-      @stopped = true
-      controller.send RendererEvent::Stop
+      controller.send Event::Stop
+    end
+
+    def notify_draw
+      controller.send Event::Draw unless stopped?
     end
   end
 

@@ -10,9 +10,6 @@ module Lemonade
   class Lemon
     BIN = "lemonbar"
 
-    getter? termination_requested = false
-    getter process : Process
-
     def self.build
       b = Builder.new
       yield b
@@ -33,6 +30,10 @@ module Lemonade
       lemon.setup_process
       lemon
     end
+
+    getter? termination_requested = false
+    getter process : Process
+    getter renderer = Renderer.new
 
     def initialize(@process)
     end
@@ -60,6 +61,13 @@ module Lemonade
     def close
       @termination_requested = true
       @process.kill
+    end
+
+    def use(bar)
+      if renderer.running?
+        renderer.stop
+      end
+      renderer.start(bar, process.input)
     end
   end
 

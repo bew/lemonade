@@ -9,4 +9,6 @@ bar = Bar.new
 
 bar.center << Block::TextBlock.new "Hello world"
 
-lemon.run bar, interval: 1.second
+lemon.use bar
+
+sleep

@@ -43,7 +43,7 @@ module Lemonade
     {% for raw_what, data in RAW_STUFF %}
       {% raw_doc = data[0]; raw_char = data[1] %}
 
-      # Set {{raw_doc}} *color*.
+      # Set {{raw_doc.id}} *color*.
       def {{raw_what.id}}_color(color)
         Formatter::Raw::StuffColor.new({{raw_char}}, color)
       end

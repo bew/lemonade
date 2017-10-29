@@ -1,4 +1,5 @@
 require "./color"
+require "./renderer"
 
 module Lemonade
   record Geometry,
@@ -17,6 +18,7 @@ module Lemonade
       process = start_process(b.build_args)
       lemon = new(process)
       lemon.setup_process
+      lemon
     end
 
     def self.start_process(args = [] of String)

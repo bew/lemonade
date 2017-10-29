@@ -45,4 +45,6 @@ container << content
 container << H.line_reset << H.disable_underline
 bar.center << container
 
-lemon.run bar, interval: 1.second
+lemon.use bar
+
+sleep

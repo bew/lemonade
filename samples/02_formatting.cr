@@ -21,4 +21,6 @@ bar.center << ul bg content, Material::Red_500
 bar.center << fgbg content, fg: Material::Blue_500, bg: Material::White
 bar.center << ul content, Material::Red_500
 
-lemon.run bar, interval: 1.second
+lemon.use bar
+
+sleep

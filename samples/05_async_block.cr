@@ -42,10 +42,10 @@ bar = Bar.new
 bar.left << AsyncBlock.new 100.milliseconds
 bar.center << AsyncBlock.new 1.second
 
-bar_renderer = BarRenderer.start(bar, lemon.process.input)
+renderer = Renderer.start(bar, lemon.process.input)
 
 sleep 4
 
-bar_renderer.stop
+renderer.stop
 
 sleep 2

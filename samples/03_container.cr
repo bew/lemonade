@@ -31,4 +31,6 @@ spawn do
   last_block.text = "New text of last block"
 end
 
-lemon.run bar, interval: 1.second
+lemon.use bar
+
+sleep

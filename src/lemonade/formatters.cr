@@ -16,6 +16,8 @@ module Lemonade
         @blocks.concat(pre_formatters)
         @blocks << block
         @blocks.concat(post_formatters)
+
+        block.parents << self
       end
     end
 

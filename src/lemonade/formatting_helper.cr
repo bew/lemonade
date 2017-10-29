@@ -4,12 +4,12 @@ module Lemonade
 
     # Formats *block* with foreground *color*.
     def fg(block, color = ColorReset)
-      Formatter::Arround.new({fg_color(color)}, block, {fg_reset})
+      Formatter::ArroundBlock.new({fg_color(color)}, block, {fg_reset})
     end
 
     # Formats *block* with background *color*.
     def bg(block, color = ColorReset)
-      Formatter::Arround.new({bg_color(color)}, block, {bg_reset})
+      Formatter::ArroundBlock.new({bg_color(color)}, block, {bg_reset})
     end
 
     # Underlines *block*, colored using *color*.
@@ -17,7 +17,7 @@ module Lemonade
       pre_formatters = {line_color(color), enable_underline}
       post_formatters = {disable_underline, line_reset}
 
-      Formatter::Arround.new pre_formatters, block, post_formatters
+      Formatter::ArroundBlock.new pre_formatters, block, post_formatters
     end
 
     # Overlines *block*, colored using *color*.
@@ -25,7 +25,7 @@ module Lemonade
       pre_formatters = {line_color(color), enable_overline}
       post_formatters = {disable_overline, line_reset}
 
-      Formatter::Arround.new pre_formatters, block, post_formatters
+      Formatter::ArroundBlock.new pre_formatters, block, post_formatters
     end
 
     # Formats *block* with foreground *fg* color, and background *bg* color.
@@ -45,7 +45,7 @@ module Lemonade
 
       # Set {{raw_doc.id}} *color*.
       def {{raw_what.id}}_color(color)
-        Formatter::Raw::StuffColor.new({{raw_char}}, color)
+        Formatter::Raw::ColorChangerBlock.new({{raw_char}}, color)
       end
 
       # Reset {{raw_doc}} color.
@@ -57,17 +57,17 @@ module Lemonade
     {% for attr, attr_char in {underline: 'u', overline: 'o'} %}
       # Enables attribute {{attr.id}}
       def enable_{{attr.id}}
-        Formatter::Raw::Attribute.enable({{attr_char}})
+        Formatter::Raw::AttributeBlock.enable({{attr_char}})
       end
 
       # Disables attribute {{attr.id}}
       def disable_{{attr.id}}
-        Formatter::Raw::Attribute.disable({{attr_char}})
+        Formatter::Raw::AttributeBlock.disable({{attr_char}})
       end
 
       # Toggles attribute {{attr.id}}
       def toggle_{{attr.id}}
-        Formatter::Raw::Attribute.toggle({{attr_char}})
+        Formatter::Raw::AttributeBlock.toggle({{attr_char}})
       end
     {% end %}
   end

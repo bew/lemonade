@@ -3,7 +3,7 @@ require "./blocks"
 
 module Lemonade
   module Formatter
-    abstract class Base < Block::BaseBlock
+    abstract class BaseBlock < Block::BaseBlock
       def formatting(io)
         io << "%{"
         yield
@@ -11,7 +11,7 @@ module Lemonade
       end
     end
 
-    class Arround < Block::Container
+    class ArroundBlock < Block::Container
       def initialize(pre_formatters, block, post_formatters)
         @blocks.concat(pre_formatters)
         @blocks << block
@@ -23,7 +23,7 @@ module Lemonade
 
     module Raw
       # e.g: %{F#abcdef} or %{B-}
-      class StuffColor < Base
+      class ColorChangerBlock < BaseBlock
         def initialize(@stuff : Char, @color : Color)
         end
 
@@ -35,7 +35,7 @@ module Lemonade
       end
 
       # e.g: %{+u} or %{!o}
-      class Attribute < Base
+      class AttributeBlock < BaseBlock
         def self.enable(attr)
           new(attr, '+')
         end

@@ -35,6 +35,18 @@ module Lemonade
     getter process : Process
     getter renderer = Renderer.new
 
+    # Replace the renderer
+    #
+    # Stop & resume the rendering if it was running
+    # Probably not needed, but why not :P
+    def renderer=(new_renderer)
+      old_renderer = @renderer
+      old_renderer.stop if was_running = old_renderer.running?
+
+      @renderer = new_renderer
+      use(old_renderer.content) if was_running
+    end
+
     def initialize(@process)
     end
 

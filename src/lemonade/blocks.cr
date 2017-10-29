@@ -19,6 +19,11 @@ module Lemonade
         @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || super
       end
 
+      # Do we want that? We can't ensure that it will put everything in dirty state.
+      # def dirty!
+      #   @blocks.each &.dirty!
+      # end
+
       def cached_render(io)
         separator = @separator
 

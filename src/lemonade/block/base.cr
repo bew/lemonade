@@ -10,8 +10,9 @@ module Lemonade
     #   @blocks = [] of Lemonade::BaseBlock
     #
     #   def <<(block)
-    #     block.parents << self # Add the container to block's parents.
+    #     block.parents << self # Add itself as a parent of the block
     #     @blocks << block      # Add the block to the container's list of block.
+    #     self
     #   end
     # end
     #

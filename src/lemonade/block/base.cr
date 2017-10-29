@@ -28,6 +28,7 @@ module Lemonade
         true
       end
 
+      # Mark the block's parents as 'dirty', to force re-render on next redraw.
       def dirty!
         @parents.each &.dirty!
       end
@@ -62,11 +63,10 @@ module Lemonade
       # proper cache reloading.
       @dirty = true
 
-      # Mark the `Block` and its parents as 'dirty', to force redraw next time.
+      # Mark the `Block` and its parents as 'dirty', to force re-render on next redraw.
       def dirty!
-        puts "dirty!"
-        @dirty = true
-        super
+        @dirty = true unless dirty?
+        super # notify parents too!
       end
 
       def dirty?

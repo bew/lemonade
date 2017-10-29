@@ -18,21 +18,21 @@ module Lemonade
       end
     {% end %}
 
-    def cached_render(io)
+    def render(io)
       puts "rendering bar..."
       unless left.blocks.empty?
         io << "%{l}"
-        left.render io
+        left.redraw io
       end
 
       unless center.blocks.empty?
         io << "%{c}"
-        center.render io
+        center.redraw io
       end
 
       unless right.blocks.empty?
         io << "%{r}"
-        right.render io
+        right.redraw io
       end
     end
   end

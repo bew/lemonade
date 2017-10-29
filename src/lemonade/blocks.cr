@@ -24,14 +24,14 @@ module Lemonade
       #   @blocks.each &.dirty!
       # end
 
-      def cached_render(io)
+      def render(io)
         separator = @separator
 
         @blocks.each_with_index do |block, i|
           if i > 0 && separator
-            separator.render io
+            separator.redraw io
           end
-          block.render io
+          block.redraw io
         end
       end
     end
@@ -44,7 +44,7 @@ module Lemonade
         dirty!
       end
 
-      def cached_render(io)
+      def render(io)
         io << @text
       end
     end
@@ -62,7 +62,7 @@ module Lemonade
       def initialize(@size = 1)
       end
 
-      def cached_render(io)
+      def render(io)
         io << " " * @size
       end
     end
@@ -71,7 +71,7 @@ module Lemonade
       def initialize(px @offset_px = 10)
       end
 
-      def cached_render(io)
+      def render(io)
         io << "%{O" << @offset_px << "}"
       end
     end

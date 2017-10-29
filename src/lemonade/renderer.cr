@@ -70,7 +70,7 @@ class Lemonade::Renderer
     end
 
     def render(io)
-      @content.render io
+      @content.redraw io
     end
   end
 end

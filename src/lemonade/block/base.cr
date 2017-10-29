@@ -1,5 +1,7 @@
 module Lemonade
   module Block
+    # TODO: doc
+    #
     # Note: Any container must add itself to the parents array of a given block.
     # Caching & dynamic block modification in multiple blocks count on that to
     # propagate to parents that a block is dirty.
@@ -21,6 +23,12 @@ module Lemonade
     abstract class BaseBlock
       property parents = [] of BaseBlock
 
+      # TODO: doc
+      def redraw(io)
+        render(io)
+      end
+
+      # TODO: doc
       abstract def render(io)
 
       # This is not a cached block, it always needs rendering.
@@ -54,7 +62,7 @@ module Lemonade
 
     # Cached version of `BaseBlock`.
     #
-    # Saves the rendering output, and use it to render the block,
+    # Saves the rendering output, and use it to redraw the block,
     # until it is marked dirty.
     abstract class CachedBlock < BaseBlock
       @cache : String? = nil
@@ -79,18 +87,16 @@ module Lemonade
         @cache.nil? || @dirty
       end
 
-      def render(io)
+      def redraw(io)
         return io << @cache unless dirty?
 
         @cache = String.build do |io|
-          cached_render(io)
+          render(io)
         end
         @dirty = false
 
         io << @cache
       end
-
-      abstract def cached_render(io)
     end
 
     # TODO: Other blocks? mixin?

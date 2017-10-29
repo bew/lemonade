@@ -12,7 +12,7 @@ end
 private def assert_format(expected)
   block = yield
   render_result = String.build do |io|
-    block.render io
+    block.redraw io
   end
   render_result.should eq expected
 end

@@ -31,17 +31,29 @@ class Lemonade::LemonManager
   def manage(lemon)
     return if managed_lemons.includes(lemon)
 
-    setup_lemon_process(lemon)
-    managed_lemons << lemon
+    data = LemonData.new
+    setup_lemon_process(lemon, data)
+    managed_lemons[lemon] = data
   end
 
   def wait(lemons)
-    event_notifiers = managed_lemons.map do |(lemon, data)|
+    # NOTE: I don't really need them to be managed (with previous #manage calls)
+    # to be able to be wait-ed?
+    event_notifiers = managed_lemons.map do |lemon, data|
       if lemons.includes?(lemon)
         return data.event_notifier
       end
     end.compact!
 
     # wait for event_notifier of all lemons to send Exited event
+    until event_notifiers.empty?
+      index, event = Channel.receive_first(event_notifiers)
+      if event == Event::Exited
+        event_notifiers.delete_at index
+      end
+    end
+  end
+
+  def setup_lemon_process(lemon, data)
   end
 end

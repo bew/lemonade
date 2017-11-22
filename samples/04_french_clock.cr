@@ -24,7 +24,6 @@ def french_clock(separator = true)
   spawn do
     loop do
       sleep 1
-      puts "update!"
       hours.dirty!
       minutes.dirty!
       seconds.dirty!

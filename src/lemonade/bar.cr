@@ -20,6 +20,8 @@ module Lemonade
 
     def render(io)
       puts "rendering bar..."
+      puts
+
       unless left.blocks.empty?
         io << "%{l}"
         left.redraw io

@@ -12,14 +12,23 @@ class Lemonade::Renderer
     renderer
   end
 
+  getter name : String?
+
   getter controller = Channel(Event).new
   getter? running = false
+
+  property debounce_interval : Time::Span = 10.milliseconds
+
+  getter? debouncing_redraw_request = false
+
+  def initialize(@name = "renderer")
+  end
 
   def start(content : Block::BaseBlock, io)
     frame_block = FrameBlock.new(content, self)
 
     # FIXME: indicate which renderer it is? (which bar? => how? I only now IO)
-    spawn rendering_loop(frame_block, io), name: "renderer"
+    spawn rendering_loop(frame_block, io), name: name
     @running = true
 
     notify_draw
@@ -30,19 +39,45 @@ class Lemonade::Renderer
   end
 
   def notify_draw
-    controller.send Event::Draw if running?
+    return unless running?
+
+    if debouncing_redraw_request?
+      renderer_debug "debounce in progress, draw request dismissed"
+      return
+    end
+
+    renderer_debug "going to notify renderer, start render debouncer first"
+
+    @debouncing_redraw_request = true
+    debounce_channel = Channel(Nil).new
+    spawn do
+      sleep debounce_interval
+      @debouncing_redraw_request = false
+      debounce_channel.send nil
+    end
+
+    spawn do
+      debounce_channel.receive
+      renderer_debug "debouncer ended, render time!"
+      controller.send Event::Draw
+    end
   end
 
   def rendering_loop(frame_block, io)
     loop do
-      case event = controller.receive
+      case controller.receive
       when Event::Draw
         begin
-          rendered = String.build { |io| frame_block.render io }
-          io.puts rendered
+          rendered = String.build { |io| frame_block.redraw io }
         rescue ex
           STDERR.puts "Error while rendering the bar: #{ex.inspect_with_backtrace}"
-          # FIXME: Do sth else?
+          next
+        end
+
+        begin
+          io.puts rendered
+        rescue ex
+          # FIXME: I/O error, what do we do?
         end
       when Event::Stop
         break
@@ -64,7 +99,7 @@ class Lemonade::Renderer
     end
 
     def dirty!
-      puts "need bar redraw!"
+      @renderer.renderer_debug "need bar redraw!"
 
       @renderer.notify_draw
     end
@@ -72,5 +107,10 @@ class Lemonade::Renderer
     def render(io)
       @content.redraw io
     end
+  end
+
+  protected def renderer_debug(msg)
+    now = Time.now.to_s("%S.%L") # <seconds>.<milliseconds>
+    puts "#{now}: #{msg}"
   end
 end

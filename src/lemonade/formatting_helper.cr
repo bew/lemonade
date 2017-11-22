@@ -4,18 +4,18 @@ module Lemonade
 
     # Formats *block* with foreground *color*.
     def fg(block, color = ColorReset)
-      Formatter::ArroundBlock.new({fg_color(color)}, block, {fg_reset})
+      Formatter::ArroundBlock.new({fg_color(color)}, block, {fg_color_reset})
     end
 
     # Formats *block* with background *color*.
     def bg(block, color = ColorReset)
-      Formatter::ArroundBlock.new({bg_color(color)}, block, {bg_reset})
+      Formatter::ArroundBlock.new({bg_color(color)}, block, {bg_color_reset})
     end
 
     # Underlines *block*, colored using *color*.
     def ul(block, color = ColorReset)
       pre_formatters = {line_color(color), enable_underline}
-      post_formatters = {disable_underline, line_reset}
+      post_formatters = {disable_underline, line_color_reset}
 
       Formatter::ArroundBlock.new pre_formatters, block, post_formatters
     end
@@ -23,7 +23,7 @@ module Lemonade
     # Overlines *block*, colored using *color*.
     def ol(block, color = ColorReset)
       pre_formatters = {line_color(color), enable_overline}
-      post_formatters = {disable_overline, line_reset}
+      post_formatters = {disable_overline, line_color_reset}
 
       Formatter::ArroundBlock.new pre_formatters, block, post_formatters
     end
@@ -49,7 +49,7 @@ module Lemonade
       end
 
       # Reset {{raw_doc}} color.
-      def {{raw_what.id}}_reset
+      def {{raw_what.id}}_color_reset
         {{raw_what.id}}_color ColorReset
       end
     {% end %}

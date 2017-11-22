@@ -16,7 +16,7 @@ module Lemonade
       end
 
       def dirty?
-        @blocks.any? &.dirty? || ((sep = @separator) && sep.dirty?) || super
+        @blocks.any?(&.dirty?) || @separator.try(&.dirty?) || super
       end
 
       # Do we want that? We can't ensure that it will put everything in dirty state.

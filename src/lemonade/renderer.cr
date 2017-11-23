@@ -1,5 +1,10 @@
 require "./blocks"
 
+# TODO: multiple renderers:
+#  - abstract BaseRenderer (with start, stop, running?, notify_draw (or draw ?))
+#  - MinimalRenderer (no debouncer, no fiber)
+#  - FiberRenderer (no debouncer)
+#  - with render debouncer like here (TODO: find a name)
 class Lemonade::Renderer
   enum Event
     Draw

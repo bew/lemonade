@@ -18,7 +18,10 @@ def french_clock(separator = true)
     fg(seconds, Material::Red_500),
   }
   if separator
-    clock.separator = Block::TextBlock.new ":"
+    colon_separator = Block::TextBlock.new ":"
+    blank_separator = Block::TextBlock.new " "
+
+    clock.separator = colon_separator
   end
 
   spawn do
@@ -27,6 +30,15 @@ def french_clock(separator = true)
       hours.dirty!
       minutes.dirty!
       seconds.dirty!
+
+      if clock.separator?
+        clock.separator = case clock.separator?
+                          when colon_separator
+                            blank_separator
+                          else
+                            colon_separator
+                          end
+      end
     end
   end
 

@@ -5,7 +5,11 @@ module Lemonade
   module Block
     class Container < CachedBlock
       property blocks = [] of BaseBlock
-      property? separator : BaseBlock?
+      getter? separator : BaseBlock?
+
+      def separator=(@separator)
+        dirty!
+      end
 
       def <<(block)
         block.parents << self

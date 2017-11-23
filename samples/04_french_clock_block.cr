@@ -17,7 +17,9 @@ class FrenchClockBlock < Block::Container
     self << fg(minutes, Material::White)
     self << fg(seconds, Material::Red_500)
     if separator
-      self.separator = Block::TextBlock.new ":"
+      @colon_separator = Block::TextBlock.new ":"
+      @blank_separator = Block::TextBlock.new " "
+      self.separator = @colon_separator
     end
 
     start
@@ -39,6 +41,15 @@ class FrenchClockBlock < Block::Container
     blocks[1].dirty!
     puts "Seconds update"
     blocks[2].dirty!
+
+    if separator?
+      self.separator = case separator?
+                       when @colon_separator
+                         @blank_separator
+                       else
+                         @colon_separator
+                       end
+    end
   end
 end
 

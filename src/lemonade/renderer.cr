@@ -114,7 +114,11 @@ class Lemonade::Renderer
     end
   end
 
+  getter? enable_debug = false
+
   protected def renderer_debug(msg)
+    return unless enable_debug?
+
     now = Time.now.to_s("%S.%L") # <seconds>.<milliseconds>
     puts "#{now}: #{msg}"
   end

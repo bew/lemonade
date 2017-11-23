@@ -65,7 +65,7 @@ module Lemonade
     # Saves the rendering output, and use it to redraw the block,
     # until it is marked dirty.
     abstract class CachedBlock < BaseBlock
-      @cache : String? = nil
+      @cached_render : String? = nil
 
       # Note: Don't set this attribute manually, use `dirty!` instead for
       # proper cache reloading.
@@ -78,30 +78,24 @@ module Lemonade
       end
 
       def dirty?
-        # @cache | @dirty | dirty?
-        # ------------------------
-        #  nil   | false  | true
-        #  nil   | true   | true
-        #  "a"   | false  | false
-        #  "a"   | true   | true
-        @cache.nil? || @dirty
+        @cached_render.nil? || @dirty
       end
 
       def redraw(io)
-        return io << @cache unless dirty?
+        return io << @cached_render unless dirty?
 
-        @cache = String.build do |io|
+        @cached_render = String.build do |io|
           render(io)
         end
         @dirty = false
 
-        io << @cache
+        io << @cached_render
       end
     end
 
     # TODO: Other blocks? mixin?
     # StaticBlock => once rendered it never change
     # IntervalBlock => need render every N seconds
-    # EventBlock => can receive click events (as a Trait? so all blocks could receive event?)
+    # ClickableBlock => can receive click events
   end
 end

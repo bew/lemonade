@@ -9,9 +9,9 @@ include FormattingHelper
 # French's colors clock: Blue:White:Red
 class FrenchClockBlock < Block::Container
   def initialize(separator = true)
-    hours = Block::ClockBlock.new "%H"
-    minutes = Block::ClockBlock.new "%M"
-    seconds = Block::ClockBlock.new "%S"
+    hours = Block::TimeBlock.new "%H"
+    minutes = Block::TimeBlock.new "%M"
+    seconds = Block::TimeBlock.new "%S"
 
     self << fg(hours, Material::Blue_500)
     self << fg(minutes, Material::White)

@@ -16,9 +16,7 @@ module Lemonade
       yield b
 
       process = start_process(b.build_args)
-      lemon = new(process)
-      lemon.setup_process
-      lemon
+      new(process)
     end
 
     def self.start_process(args = [] of String)
@@ -28,9 +26,7 @@ module Lemonade
     end
 
     def self.new
-      lemon = new(start_process)
-      lemon.setup_process
-      lemon
+      new(start_process)
     end
 
     getter? termination_requested = false
@@ -50,26 +46,6 @@ module Lemonade
     end
 
     def initialize(@process)
-    end
-
-    def setup_process
-      spawn do
-        while line = process.error.gets
-          STDERR.puts "[lemon pid:#{process.pid}] #{line}"
-        end
-      end
-
-      spawn do
-        pid = process.pid
-        # FIXME: Is there a better way to wait for process termination?
-        until process.terminated?
-          sleep 0.1 # Wait a bit, to release the CPU
-        end
-        unless termination_requested?
-          STDERR.puts "Lemon process (pid:#{pid}) terminated unexpectedly, exiting.."
-          exit 1 # TODO: notify the Lemonade controlling process?
-        end
-      end
     end
 
     def close
@@ -95,7 +71,7 @@ module Lemonade
     property? bg_color : Color?
     property? fg_color : Color?
     property? underline_color : Color?
-    property permanent = false
+    property? permanent = false
     property fonts = [] of String
 
     def font=(font)
@@ -150,7 +126,7 @@ module Lemonade
         args << "-U" << underline_color.to_s
       end
 
-      if permanent
+      if permanent?
         args << "-p"
       end
 

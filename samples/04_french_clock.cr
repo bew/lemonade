@@ -50,4 +50,5 @@ bar.center.separator = Block::TextSpacerBlock.new 2
 
 lemon.use bar
 
-sleep
+manager = LemonManager.new
+manager.wait lemon

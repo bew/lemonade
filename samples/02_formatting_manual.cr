@@ -47,4 +47,5 @@ bar.center << container
 
 lemon.use bar
 
-sleep
+manager = LemonManager.new
+manager.wait lemon

@@ -11,4 +11,5 @@ bar.center << Block::TextBlock.new "Hello world"
 
 lemon.use bar
 
-sleep
+manager = LemonManager.new
+manager.wait lemon

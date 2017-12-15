@@ -21,17 +21,17 @@ describe Lemonade::FormattingHelper do
   describe "raw formatters" do
     it "sets & resets foreground color" do
       assert_format "%{F#abc}" { H.fg_color("#abc") }
-      assert_format "%{F-}" { H.fg_reset }
+      assert_format "%{F-}" { H.fg_color_reset }
     end
 
     it "sets & resets background color" do
       assert_format "%{B#abc}" { H.bg_color("#abc") }
-      assert_format "%{B-}" { H.bg_reset }
+      assert_format "%{B-}" { H.bg_color_reset }
     end
 
     it "sets & resets line color" do
       assert_format "%{U#abc}" { H.line_color("#abc") }
-      assert_format "%{U-}" { H.line_reset }
+      assert_format "%{U-}" { H.line_color_reset }
     end
 
     it "enables & disables underline" do

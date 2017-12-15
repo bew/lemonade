@@ -1,10 +1,12 @@
 require "./blocks"
 
 # TODO: multiple renderers:
-#  - abstract BaseRenderer (with start, stop, running?, notify_draw (or draw ?))
+#  - abstract BaseRenderer (with start, stop, running?, notify_draw (or draw ? or request_draw ?))
 #  - MinimalRenderer (no debouncer, no fiber)
 #  - FiberRenderer (no debouncer)
 #  - with render debouncer like here (TODO: find a name)
+#
+# TODO: explain how it works (?) and why it's important to render asynchronously, and not on every draw request
 class Lemonade::Renderer
   enum Event
     Draw
@@ -17,14 +19,14 @@ class Lemonade::Renderer
     renderer
   end
 
-  getter name : String?
+  getter name : String
 
   getter controller = Channel(Event).new
   getter? running = false
 
-  property debounce_interval : Time::Span = 10.milliseconds
+  property redraw_minimal_interval : Time::Span = 10.milliseconds
 
-  getter? debouncing_redraw_request = false
+  getter? redraw_scheduled = false
 
   def initialize(@name = "renderer")
   end
@@ -32,7 +34,6 @@ class Lemonade::Renderer
   def start(content : Block::BaseBlock, io)
     frame_block = FrameBlock.new(content, self)
 
-    # FIXME: indicate which renderer it is? (which bar? => how? I only now IO)
     spawn rendering_loop(frame_block, io), name: name
     @running = true
 
@@ -46,18 +47,18 @@ class Lemonade::Renderer
   def notify_draw
     return unless running?
 
-    if debouncing_redraw_request?
-      renderer_debug "debounce in progress, draw request dismissed"
+    if redraw_scheduled?
+      renderer_debug "Redraw already scheduled, dismissing this draw request"
       return
     end
 
-    renderer_debug "going to notify renderer, start render debouncer first"
+    renderer_debug "Scheduling redraw request, redraw in (at least) #{redraw_minimal_interval}"
 
-    @debouncing_redraw_request = true
+    @redraw_scheduled = true
     debounce_channel = Channel(Nil).new
     spawn do
-      sleep debounce_interval
-      @debouncing_redraw_request = false
+      sleep redraw_minimal_interval
+      @redraw_scheduled = false
       debounce_channel.send nil
     end
 
@@ -81,8 +82,9 @@ class Lemonade::Renderer
 
         begin
           io.puts rendered
-        rescue ex
-          # FIXME: I/O error, what do we do?
+        rescue ex # : IO::Error
+          STDERR.puts "renderer: IO Error: #{ex.inspect_with_backtrace}"
+          # FIXME: I/O (or other?) error, what do we do?
         end
       when Event::Stop
         break
@@ -120,6 +122,6 @@ class Lemonade::Renderer
     return unless enable_debug?
 
     now = Time.now.to_s("%S.%L") # <seconds>.<milliseconds>
-    puts "#{now}: #{msg}"
+    puts "#{now} [#{@name}]: #{msg}"
   end
 end

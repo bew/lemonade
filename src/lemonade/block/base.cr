@@ -67,29 +67,24 @@ module Lemonade
     abstract class CachedBlock < BaseBlock
       @cached_render : String? = nil
 
-      # Note: Don't set this attribute manually, use `dirty!` instead for
-      # proper cache reloading.
-      @dirty = true
-
       # Mark the `Block` and its parents as 'dirty', to force re-render on next redraw.
       def dirty!
-        @dirty = true unless dirty?
+        @cached_render = nil # dismiss cached render
         super # notify parents too!
       end
 
       def dirty?
-        @cached_render.nil? || @dirty
+        @cached_render.nil?
       end
 
       def redraw(io)
         return io << @cached_render unless dirty?
 
-        @cached_render = String.build do |io|
+        @cached_render = rendered = String.build do |io|
           render(io)
         end
-        @dirty = false
 
-        io << @cached_render
+        io << rendered
       end
     end
 

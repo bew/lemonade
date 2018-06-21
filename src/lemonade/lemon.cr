@@ -22,7 +22,7 @@ module Lemonade
     def self.start_process(args = [] of String)
       puts "Starting Lemon with args: #{args}"
 
-      Process.new BIN, args, input: nil, output: nil, error: nil
+      Process.new BIN, args, input: :pipe, output: :pipe, error: :pipe
     end
 
     def self.new

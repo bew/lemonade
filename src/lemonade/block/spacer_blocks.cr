@@ -3,6 +3,7 @@ require "./base"
 module Lemonade::Block
   class TextSpacerBlock < CachedBlock
     def initialize(@size = 1)
+      @size = 0 if @size < 0
     end
 
     def render(io)

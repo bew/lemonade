@@ -17,8 +17,16 @@ module Lemonade::Block
       self
     end
 
+    def clear
+      @blocks.each do |child|
+        child.parents.delete(self)
+      end
+      @blocks.clear
+      dirty!
+    end
+
     def dirty?
-      @blocks.any?(&.dirty?) || @separator.try(&.dirty?) || super
+      @blocks.any?(&.dirty?) || !!@separator.try(&.dirty?) || super
     end
 
     # Do we want that? We can't ensure that it will put everything in dirty state.
@@ -36,5 +44,7 @@ module Lemonade::Block
         block.redraw io
       end
     end
+
+    delegate :empty?, to: @blocks
   end
 end

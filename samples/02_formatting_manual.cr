@@ -21,28 +21,28 @@ bar.center << content
 container = Block::Container.new
 container << H.fg_color(Material::Teal_500)
 container << content
-container << H.fg_reset
+container << H.fg_color_reset
 bar.center << container
 
 # bar.center << H.ul H.bg content, Material::Red_500
 container = Block::Container.new
 container << H.enable_underline << H.bg_color(Material::Red_500)
 container << content
-container << H.bg_reset << H.disable_underline
+container << H.bg_color_reset << H.disable_underline
 bar.center << container
 
 # bar.center << H.fgbg content, fg: Material::Blue_500, bg: Material::White
 container = Block::Container.new
 container << H.fg_color(Material::Blue_500) << H.bg_color(Material::White)
 container << content
-container << H.bg_reset << H.fg_reset
+container << H.bg_color_reset << H.fg_color_reset
 bar.center << container
 
 # bar.center << H.ul content, Material::Red_500
 container = Block::Container.new
 container << H.enable_underline << H.line_color(Material::Red_500)
 container << content
-container << H.line_reset << H.disable_underline
+container << H.line_color_reset << H.disable_underline
 bar.center << container
 
 lemon.use bar

@@ -68,11 +68,23 @@ module Lemonade
     property? geometry : Geometry?
     property? nb_click_areas : Int32?
     property? underline_height : Int32?
-    property? bg_color : Color?
-    property? fg_color : Color?
-    property? underline_color : Color?
+    getter? bg_color : Color?
+    getter? fg_color : Color?
+    getter? underline_color : Color?
     property? permanent = false
     property fonts = [] of String
+
+    def bg_color=(col)
+      @bg_color = Color.new col
+    end
+
+    def fg_color=(col)
+      @fg_color = Color.new col
+    end
+
+    def underline_color=(col)
+      @underline_color = Color.new col
+    end
 
     def font=(font)
       fonts.clear

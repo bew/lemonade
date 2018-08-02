@@ -45,7 +45,7 @@ module Lemonade
 
       # Set {{raw_doc.id}} *color*.
       def {{raw_what.id}}_color(color)
-        Formatter::Raw::ColorChangerBlock.new({{raw_char}}, color)
+        Formatter::Raw::ColorChangerBlock.new({{raw_char}}, Color.new(color))
       end
 
       # Reset {{raw_doc}} color.

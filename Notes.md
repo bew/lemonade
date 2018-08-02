@@ -21,3 +21,7 @@ The content providers could have a Pub/Sub pattern, and when:
 - 0 subscriber, stop the provider
 
 
+
+## How to get rendered when a child is dirty
+
+IMPORTANT: if you have child blocks, you have to add yourself to there `parents` property. Do that only for your direct children.

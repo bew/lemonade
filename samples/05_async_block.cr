@@ -9,7 +9,7 @@ H = FormattingHelper
 class AsyncBlock < Block::BaseBlock
   @counter = 0
 
-  def initialize(@interval : Time::Span)
+  def initialize(@name : String, @interval : Time::Span)
     start # TODO: start this method from elsewhere?
     # ship a module for async blocks with abstract `start` & default `stop` method
     # with some helper to help create async stuff.
@@ -27,20 +27,20 @@ class AsyncBlock < Block::BaseBlock
 
   def update
     @counter += 1
-    puts "Updating counter: #{@counter}"
+    puts "Counter #{@name} update: #{@counter}"
     dirty!
   end
 
   def render(io)
-    io << "Counter: #{@counter}"
+    io << "Counter #{@name}: #{@counter}"
   end
 end
 
 lemon = Lemon.new
 
 bar = Bar.new
-bar.left << AsyncBlock.new 100.milliseconds
-bar.center << AsyncBlock.new 1.second
+bar.left << AsyncBlock.new "fast", 100.milliseconds
+bar.center << AsyncBlock.new "slow", 1.second
 
 renderer = Renderer.start(bar, lemon.process.input)
 

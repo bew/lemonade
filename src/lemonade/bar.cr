@@ -6,6 +6,12 @@ module Lemonade
     getter center = Block::Container.new
     getter right = Block::Container.new
 
+    def initialize
+      left.parents << self
+      center.parents << self
+      right.parents << self
+    end
+
     {% for block_name in %w(left center right) %}
       def {{ block_name.id }}=(block : Block::BaseBlock)
         @{{ block_name.id }}.clear

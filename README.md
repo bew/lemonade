@@ -75,6 +75,8 @@ $ ./my_lemonade [args...]
 
 ### Notes about possibilities
 
+(note: a lemon is a lemonbar instance, and a lemonade is a group of lemons :smiley:)
+
 A lemonade config can dynamically create lemons, position them, and change them based on events coming from other lemons (in the same lemonade).
 
 Example lemonade:
